@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Base_64 {
 	
@@ -24,21 +25,27 @@ public class Base_64 {
 	public static String codificar_Base64(File archivo, int it){
 	     String encodedfile;
              String resultado = null;
+             String extension;
 	     try {	    	
                  //leemos la cantidad de bytes del archivo a codificar y creamos un array de bytes para almacenarlo	         
 		FileInputStream fileInputStreamReader = new FileInputStream(archivo);
 	        byte[] bytesArchivo = new byte[(int)archivo.length()];
  
-                //obtenemos la extension del archivo
-                String extension_archivo = null;
-                List <File> nombre = FXMLDocumentController.selectedFiles;
-                String extension = nombre.get(it).getName().substring(nombre.get(it).getName().lastIndexOf(".")+1);
-                
-                //pasamos a string el archivo ya codificado,y a ese string le concatenamos delante la extension.
-                fileInputStreamReader.read(bytesArchivo);
-	        encodedfile = new String(Base64.getEncoder().encode(bytesArchivo));
-                resultado = extension + "#" + encodedfile;
+                //obtenemos la extension del archivo si it = -1 estamos CIFRANDO el txt con la clave privada RSA
+                if(it==-1){
+                    extension = "txt";
+                }else{
+                    List <File> nombre = FXMLDocumentController.selectedFiles;
+                    extension = nombre.get(it).getName().substring(nombre.get(it).getName().lastIndexOf(".")+1);
+                }
+                    //pasamos a string el archivo ya codificado,y a ese string le concatenamos delante la extension.
+                    fileInputStreamReader.read(bytesArchivo);
+                    encodedfile = new String(Base64.getEncoder().encode(bytesArchivo));
+                    resultado = extension + "#" + encodedfile;
+                    fileInputStreamReader.close();
 
+
+                
 	     } catch (FileNotFoundException e) {
              } catch (IOException e) {}
 	     
@@ -73,18 +80,23 @@ public class Base_64 {
             //obtenemos el nombre y la extension del archivo
             File ruta = FXMLDocumentController.selectedDirectory;
             List <File> nombre = FXMLDocumentController.selectedFiles;
- 
-            String archivo;
             String nombre_archivo = null;
-            archivo = nombre.get(it).getName();
-            if(archivo.lastIndexOf(".") != -1 && archivo.lastIndexOf(".") != 0){
-                nombre_archivo = archivo.substring(0,archivo.lastIndexOf("."));
+            String archivo;
+            
+            if(it!=-1){
+                archivo = nombre.get(it).getName();
+                if(archivo.lastIndexOf(".") != -1 && archivo.lastIndexOf(".") != 0){
+                    nombre_archivo = archivo.substring(0,archivo.lastIndexOf("."));
+                }
+            }else{
+                int randomNum = ThreadLocalRandom.current().nextInt(0, 10000 + 1);
+                nombre_archivo = "clave_privRSA_" + randomNum + ".txt";
             }
-
+            
             //if para ver si ciframos o descriframos
             if(cifrar){
 		try  {    
-                    FileOutputStream fos = new FileOutputStream(ruta + "\\_CIFRADO" + "_"+ nombre_archivo + ".crypt");
+                    FileOutputStream fos = new FileOutputStream(ruta + "\\CIF_" + nombre_archivo + ".crypt");
 			   fos.write(ArchivoEnBytes);         
                 }
                 catch(IOException e){}
@@ -92,7 +104,7 @@ public class Base_64 {
             
             else{
 		try  {                   
-                    FileOutputStream fos = new FileOutputStream(ruta + "\\_DESCIFRADO_" + nombre_archivo + "." + extension_iteracion_actual);
+                    FileOutputStream fos = new FileOutputStream(ruta + "\\DES_" + nombre_archivo + "." + extension_iteracion_actual);
 			   fos.write(ArchivoEnBytes);
                 }
                 catch(IOException e){}

@@ -14,13 +14,18 @@ public class AESenc {
   
     public AESenc(){}
 
-    public static byte[] encrypt(String data, boolean txt) throws Exception {
+    public static byte[] encrypt(String data, int it ,boolean txt) throws Exception {
 
     	try{
 	    Key aesKey = generateKey(txt);
             
-            
-            //RSAenc.encrypt(Arrays.toString(keyValue));
+            /*Si lo que le pasamos es un archivo (y no el txt con la clave privada) 
+              y ademas estamos en la primera iteracion entra para generar la RSA y cifrar la clave AES
+            */
+            if(!txt && it==0){
+                byte[] clave_AES_CifradaRSA;
+                clave_AES_CifradaRSA = RSAenc.encrypt(Arrays.toString(keyValue));
+            }
             
 	    Cipher c = Cipher.getInstance(algoritmo);
 	    c.init(Cipher.ENCRYPT_MODE, aesKey);
@@ -40,23 +45,24 @@ public class AESenc {
     private static Key generateKey(boolean txt) throws Exception {
         
         Key aesKey;
-
-        /*if(txt){
+          
+        aesKey=new SecretKeySpec(keyValue, algoritmo);
+        return aesKey;        
+        
+        /*
+        if(txt){
             String clave = FXMLDocumentController.clave;
             aesKey=new SecretKeySpec(clave.getBytes(), algoritmo);
         }
         
         else{
-        /*SecureRandom random = new SecureRandom();
+        SecureRandom random = new SecureRandom();
         byte[] keyValue = new byte[16];
         random.nextBytes(keyValue); 
         System.out.println("16 bits ---> " +  Arrays.toString(keyValue));
          }
         */
-       
-       
-     aesKey=new SecretKeySpec(keyValue, algoritmo);
-        return aesKey;
+    
     }
 
 }

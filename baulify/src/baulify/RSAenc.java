@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.util.Arrays;
 import javax.crypto.Cipher;
-import java.util.concurrent.ThreadLocalRandom;
 /**
  *
  * @author Mario
@@ -33,13 +32,11 @@ public class RSAenc {
             
             
             //GUARDAR ESTE STRING EN UN TXT
-            int randomNum = ThreadLocalRandom.current().nextInt(0, 1000 + 1);
             File ruta = FXMLDocumentController.selectedDirectory;
-            txtruta=ruta+ "\\clave_descifrado_" + randomNum + ".txt";
+            txtruta = ruta+ "\\clave_descifrado_" + ".txt";
             File txt = new File(txtruta);
            
-            BufferedWriter bw;
-            
+            BufferedWriter bw;            
                  bw = new BufferedWriter (new FileWriter(txt));
                  bw.write(clave_privada);
                  bw.close();

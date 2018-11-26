@@ -13,10 +13,11 @@
 
 
 
+
 -------------- Versión 0.51 --- 24/11/18 ------------------------
 
 ------------------Novedades------------------------
--Añadida la clase para el cifrado RSA, cifra la clave AES. No hace nada más.
+-Añadida la clase para el cifrado RSA, cifra la clave AES. No hace nada más, ni concatenamos la aes cifrada ni nada de nada.
 -Añadidos los archivos de ejemplo fotos y videos al .Zip para probar el programa.
 
 ---------------Fallos encontrados------------------
@@ -26,3 +27,17 @@
 ---------------Fallos solucionados------------------
 -La lista de archivos no se vacía en la interfaz, a pesar de internamente estar vacia. -----> ARREGLADO.
 	----> Ahora el programa se reinicia cada vez que se cifra o descifra.
+
+
+
+
+-------------- Versión 0.52 --- 26/11/18 ------------------------
+
+------------------Novedades------------------------
+-Ahora la clave privada RSA se guarda en un txt cifrado con AES
+
+---------------Fallos encontrados------------------
+-El mensaje de ESTAMOS TRABAJANDO se queda abierto aún reiciando el programa.
+
+
+

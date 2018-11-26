@@ -1,6 +1,7 @@
 package baulify;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +34,7 @@ public class Controlador {
                     for (int i = 0; i<ArchivosEnB64.length; i++) {
                         
                         //Ciframos el archivo con aes
-                        ArchivoEnAES = AESenc.encrypt(ArchivosEnB64[i],false);
+                        ArchivoEnAES = AESenc.encrypt(ArchivosEnB64[i],i,false);
                         
                         //Pasamos el archivo cifrado con AES a tipo File para guardarlo
                         /*El metodo ArrayBytes_toFile recibe:
@@ -45,19 +46,29 @@ public class Controlador {
                         */
                         Base_64.ArrayBytes_toFile(ArchivoEnAES, i, true);
                         
-                        //Al final de la ultima iteracion informamos de que el cifrado ha terminado  
+                        //Al final de la ultima iteracion informamos de que el cifrado ha terminado y ciframos el txt con la RSA privada
                         if(i==(ArchivosEnB64.length-1)){
-                            
-                            
-                        //Base_64.ArrayBytes_toFile(AESenc.encrypt(RSAenc.txtruta, true), i, true);
-                            
+
+                           //obtenemos el archivo txt de la clave priv RSA, pasamos a b64 y lo ciframos con AES
+                           File txt = new File(RSAenc.txtruta);                          
+                           String txt_b64 = Base_64.codificar_Base64(txt, -1);
+                             
+                           //txt cifrado con AES aun en un byte[]
+                           byte[] txtFile_priv = AESenc.encrypt(txt_b64, -1, true);
+
+                           //pasamos el byte[] a un FILE
+                           Base_64.ArrayBytes_toFile(txtFile_priv, -1 , true);
+                           
+                           //borramos el txt con la RSA privada sin cifrar
+                         
+                            System.out.println(txt.getAbsolutePath());
+                             txt.delete();
                             
                             //vaciamos el file chooser                 
-                            //new FXMLDocumentController().refrescar_lista();
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("¡Terminado!");
                             alert.setHeaderText("¡Ya hemos terminado de cifrar tus archivos!");
-                            alert.setContentText("Encontrarás tus archivos en: " + FXMLDocumentController.selectedDirectory);
+                            alert.setContentText("Encontrarás tus archivos en:  " + FXMLDocumentController.selectedDirectory);
                             alert.showAndWait();
                             
                             //reiniciamos la aplicación
