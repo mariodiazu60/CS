@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="anchor" prefHeight="476.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="baulify.FXMLDocumentController">
+   <children>
+      <PasswordField fx:id="password" layoutX="323.0" layoutY="267.0" prefHeight="26.0" prefWidth="188.0" promptText="8 caracteres" >
+         <font>
+            <Font name="Lucida Console" size="15.0" />
+         </font>
+      </PasswordField>
+      <Text fill="#494545" fontSmoothingType="LCD" layoutX="62.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña:">
+         <font>
+            <Font name="Lucida Console" size="24.0" />
+         </font>
+      </Text>
+      <Button fx:id="cifrar" layoutX="62.0" layoutY="318.0" mnemonicParsing="false" onAction="#CifrarAction" prefHeight="123.0" prefWidth="227.0" text="CIFRAR">
+         <font>
+            <Font name="OCR A Extended" size="36.0" />
+         </font></Button>
+      <Button fx:id="descifrar" layoutX="321.0" layoutY="318.0" mnemonicParsing="false" onAction="#DescifrarAction" prefHeight="123.0" prefWidth="227.0" text="DESCIFRAR">
+         <font>
+            <Font name="OCR A Extended" size="33.0" />
+         </font></Button>
+      <Button fx:id="elegir" layoutX="62.0" layoutY="95.0" mnemonicParsing="false" onAction="#ElegirAction" prefHeight="32.0" prefWidth="159.0" text="Archivo/s:">
+         <font>
+            <Font name="Lucida Console" size="18.0" />
+         </font>
+      </Button>
+      <ListView fx:id="lista" layoutX="320.0" layoutY="35.0" prefHeight="153.0" prefWidth="260.0" />
+      <Button fx:id="guardar" layoutX="62.0" layoutY="203.0" mnemonicParsing="false" onAction="#EnRutarAction" prefHeight="32.0" prefWidth="159.0" text="Guardar en:">
+         <font>
+            <Font name="Lucida Console" size="18.0" />
+         </font>
+      </Button>
+      <Text fx:id="ruta" fill="#00000080" fontSmoothingType="LCD" layoutX="320.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ruta" wrappingWidth="260.0">
+         <font>
+            <Font name="Lucida Console" size="18.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
