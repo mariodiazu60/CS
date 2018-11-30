@@ -97,12 +97,13 @@ public class FXMLDocumentController implements Initializable {
             alert.setContentText("Elija la ruta donde desea guardar los archivos cifrados.");
             alert.showAndWait();
         }else{
+            clave = password.getText();
             //Crear otra alerta con =/= nombre CLARA LO SABE
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("¡Estamos trabajando!");
             alert.setContentText("Estamos trabajando en cifrar tus archivos, ¡Un momento por favor!");
             alert.show();
-            clave = password.getText();
+            
             Controlador.cifrar(selectedFiles);
         }
     }
@@ -121,10 +122,12 @@ public class FXMLDocumentController implements Initializable {
             alert.setContentText("Elija la ruta donde desea guardar los archivos descifrados.");
             alert.showAndWait();
         }else{
+            clave = password.getText();
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("¡Estamos trabajando!");
             alert.setContentText("Estamos trabajando en descifrar tus archivos, ¡Un momento por favor!");
             alert.show();
+            
             Controlador.descifrar(selectedFiles);
          }
     }

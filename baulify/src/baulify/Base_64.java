@@ -41,7 +41,7 @@ public class Base_64 {
                     //pasamos a string el archivo ya codificado,y a ese string le concatenamos delante la extension.
                     fileInputStreamReader.read(bytesArchivo);
                     encodedfile = new String(Base64.getEncoder().encode(bytesArchivo));
-                    resultado = extension + "#" + encodedfile;
+                    resultado = extension + "#" + encodedfile + "#";
                     fileInputStreamReader.close();
 
 
@@ -65,6 +65,7 @@ public class Base_64 {
                 //nos guardamos la extension en una variable de instancia, cada vez que decodifiquemos un archivo cambiará
                 extension_iteracion_actual = parts[0];
                 archivo_sin_extension = parts[1];
+                  
                 
                 //Pasamos el string en base64 ( ya sin la extension concatenada) a una array de bytes, es decir, a su estado original
 	        ArrayDecodificado = Base64.getDecoder().decode(archivo_sin_extension.getBytes("UTF-8"));            
@@ -88,9 +89,9 @@ public class Base_64 {
                 if(archivo.lastIndexOf(".") != -1 && archivo.lastIndexOf(".") != 0){
                     nombre_archivo = archivo.substring(0,archivo.lastIndexOf("."));
                 }
-            }else{
+            } else{
                 int randomNum = ThreadLocalRandom.current().nextInt(0, 10000 + 1);
-                nombre_archivo = "clave_privRSA_" + randomNum + ".txt";
+                nombre_archivo = "clave_privRSA_" + randomNum;
             }
             
             //if para ver si ciframos o descriframos

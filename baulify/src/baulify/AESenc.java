@@ -1,5 +1,6 @@
 package baulify;
 
+import java.io.ByteArrayOutputStream;
 import java.security.Key;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -8,65 +9,100 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESenc {
 
-    //esto es lo que hay que cif en rsa y concatenar al archivo
-    private static final byte[] keyValue = new byte[]{-59, -126, 79, -43, 93, 39, 100, 94, -127, -46, -90, -46, -59, 9, -60, 18}; 
+
+    private static byte[] keyValue = new byte[]{-59, -126, 79, -43, 93, 39, 100, 94, -127, -46, -90, -46, -59, 9, -60, 18}; 
     private static final String algoritmo = "AES";
   
     public AESenc(){}
 
-    public static byte[] encrypt(String data, int it ,boolean txt) throws Exception {
-
-    	try{
-	    Key aesKey = generateKey(txt);
-            
-            /*Si lo que le pasamos es un archivo (y no el txt con la clave privada) 
-              y ademas estamos en la primera iteracion entra para generar la RSA y cifrar la clave AES
-            */
-            if(!txt && it==0){
-                byte[] clave_AES_CifradaRSA;
-                clave_AES_CifradaRSA = RSAenc.encrypt(Arrays.toString(keyValue));
+    public static byte[] encrypt(String data, int it ,boolean txt) throws Exception{
+         
+            /* Si lo que le pasamos es un archivo (y no el txt con la clave privada) y ademas estamos en la primera iteracion 
+            entra para generar la RSA y cifrar la clave AES */
+            if(!txt && it==0 && FXMLDocumentController.clave!=null){
+                Key aesKey = generateKey(true);
+                RSAenc.encrypt(Arrays.toString(keyValue));
             }
             
-	    Cipher c = Cipher.getInstance(algoritmo);
+            Key aesKey = generateKey(txt);
+	    Cipher c = Cipher.getInstance("AES");
 	    c.init(Cipher.ENCRYPT_MODE, aesKey);
 	    byte[] encVal = c.doFinal(data.getBytes());
-	    return encVal;    
-        }catch(Exception e){return null;}
+
+            //Si estamos cifrando el txt con la clave RSA priv return aqui y no concatenamos nda detras
+            if(it==-1){
+                return encVal;
+            }
+            
+            byte[] result;
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream( )) {
+                outputStream.write( encVal );
+                outputStream.write( RSAenc.clave_AES_cif );
+                result = outputStream.toByteArray( );
+            }
+	    return result;    
     }
    
-    public static String decrypt(byte[] encryptedDataArray) throws Exception {
-        Key key = generateKey(false);
-        Cipher c = Cipher.getInstance(algoritmo);
+    public static String decrypt(byte[] encryptedData) throws Exception {      
+        Key key = null;
+        boolean esClave = false;     
+        int tam_clave = 256;
+        int tam_archivo = encryptedData.length - tam_clave;
+        byte[] encryptedArchivo = null;
+        byte[] encryptedClave = new byte[tam_clave];
+        
+        //Descifrando el txt con la rsa 
+        if(FXMLDocumentController.clave.equalsIgnoreCase("") == false){
+            esClave = true;
+            key = generateKey(esClave); 
+            encryptedArchivo = new byte[encryptedData.length];
+            for(int i = 0; i<encryptedData.length ; ++i){ 
+                    encryptedArchivo[i] = encryptedData[i];                
+                }
+        }
+        
+        //Desciframos los archivos
+            else {
+                //Desconcatenar la clave AES cifrada, se la pasas a RSAenc, y el return de RSAenc.decrypt sera el keyValue
+                int pos_encClave = -1;
+                encryptedArchivo = new byte[tam_archivo];
+                for(int i = tam_archivo; i<encryptedData.length ; ++i){ 
+                    pos_encClave ++;
+                    encryptedClave[pos_encClave] = encryptedData[i];  
+                }
+                
+                //Sacamos el archivo cifrado
+                for(int i = 0; i<tam_archivo ; ++i){ 
+                    encryptedArchivo[i] = encryptedData[i];                
+                }
+                //keyValue = RSAenc.decrypt(encryptedClave);
+                key = generateKey(esClave);
+            }      
+        Cipher c = Cipher.getInstance("AES");
         c.init(Cipher.DECRYPT_MODE, key);
-        byte[] decValue = c.doFinal(encryptedDataArray);
+        byte[] decValue = c.doFinal(encryptedArchivo);
         return new String(decValue);
     }
   
     private static Key generateKey(boolean txt) throws Exception {
         
-        Key aesKey;
-          
-        aesKey=new SecretKeySpec(keyValue, algoritmo);
-        return aesKey;        
-        
-        /*
+        Key aesKey = null;
         if(txt){
-            String clave = FXMLDocumentController.clave;
+
+           //COGER LOS BYTES DES LA INTERFAZ
+           //DE MOMENTO TODO LOS CIFRADOS LOS HACEMOS CON LA CLAVE AES ESTATICA    
+            String clave = FXMLDocumentController.clave;   
             aesKey=new SecretKeySpec(clave.getBytes(), algoritmo);
-        }
-        
+        }    
         else{
-        SecureRandom random = new SecureRandom();
-        byte[] keyValue = new byte[16];
-        random.nextBytes(keyValue); 
-        System.out.println("16 bits ---> " +  Arrays.toString(keyValue));
-         }
-        */
-    
+            //SecureRandom random = new SecureRandom();
+            //byte[] keyValue = new byte[16];
+           // random.nextBytes(keyValue); 
+            //keyValue = new byte[]{-59, -126, 79, -43, 93, 39, 100, 94, -127, -46, -90, -46, -59, 9, -60, 18}; 
+            aesKey = new SecretKeySpec(keyValue, algoritmo);
+        } 
+
+        return aesKey; 
     }
-
 }
-
-
-
 

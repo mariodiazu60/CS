@@ -13,7 +13,6 @@
 
 
 
-
 -------------- Versión 0.51 --- 24/11/18 ------------------------
 
 ------------------Novedades------------------------
@@ -29,15 +28,35 @@
 	----> Ahora el programa se reinicia cada vez que se cifra o descifra.
 
 
-
-
 -------------- Versión 0.52 --- 26/11/18 ------------------------
 
 ------------------Novedades------------------------
--Ahora la clave privada RSA se guarda en un txt cifrado con AES
+-Ahora la clave privada RSA se guarda en un txt cifrado con AES. Ese cifrado se hace con la clave que indique el usuario en la interfaz.
+	El cifrado AES de los archivos sigue siendo con una semilla fija.
+
+---------------Fallos encontrados------------------
+-El mensaje de ESTAMOS TRABAJANDO se queda abierto aún reiciando el programa.
+
+
+-------------- Versión 0.53 --- 28/11/18 ------------------------
+
+------------------Novedades------------------------
+-Ahora la clave privada RSA cifrada con RSA se guarda en un txt 
 
 ---------------Fallos encontrados------------------
 -El mensaje de ESTAMOS TRABAJANDO se queda abierto aún reiciando el programa.
 
 
 
+-------------- Versión 0.64 --- 30/11/18 ------------------------
+
+------------------Novedades------------------------
+-Ahora el archivo y la clave RSA priv cifrada están concatenados
+-Al descifrar se desconcatenan el archivo por un lado y la clave por otro
+-Ahora ciframos/desciframos los archivos con una semilla AES fija.
+-Ahora ciframos/desciframos el TXT con un la clave AES introducida en la interfaz.
+
+---------------Fallos encontrados------------------
+-El mensaje de ESTAMOS TRABAJANDO se queda abierto aún reiciando el programa.
+-Cuando pasamos el contenido del TXT para descifrarlo en RSAenc.decrypt nos devuelve un error.
+	----> Por eso no podemos hacer que la semilla AES sea aleatoria porq no podemos descifrarla
