@@ -89,7 +89,7 @@ public class Base_64 {
                 }
             } else{
                 int randomNum = ThreadLocalRandom.current().nextInt(0, 10000 + 1);
-                nombre_archivo = "clave_privRSA_" + randomNum;
+                nombre_archivo = "clave_privRSA_"; //+ randomNum;
             }
             
             //if para ver si ciframos o descriframos

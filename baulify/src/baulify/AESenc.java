@@ -9,40 +9,44 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESenc {
     
-    private static byte[] keyValue = new byte[]{-59, -126, 79, -43, 93, 39, 100, 94, -127, -46, -90, -46, -59, 9, -60, 18}; 
+    private static byte[] keyValue = new byte[16]; 
     private static final String algoritmo = "AES";
-  
-    public AESenc(){}
-
-    public static byte[] encrypt(String data, int it ,boolean txt) throws Exception{
          
-            /* Si lo que le pasamos es un archivo (y no el txt con la clave privada) y ademas estamos en la primera iteracion 
-            entra para generar la RSA y cifrar la clave AES */
-            if(!txt && it==0 && FXMLDocumentController.clave!=null){
-                Key aesKey = generateKey(true);
-                RSAenc.encrypt(keyValue);
-            }
-            
-            Key aesKey = generateKey(txt);
-	    Cipher c = Cipher.getInstance("AES");
-	    c.init(Cipher.ENCRYPT_MODE, aesKey);
-	    byte[] encVal = c.doFinal(data.getBytes());
+    protected AESenc(){}
 
-            //Si estamos cifrando el txt con la clave RSA priv return aqui y no concatenamos nda detras
-            if(it==-1){
-                return encVal;
-            }
+    protected static byte[] encrypt(String data, int it ,boolean txt) throws Exception{
+        
+        /* Si lo que le pasamos es un archivo (y no el txt con la clave privada) y ademas estamos en la primera iteracion 
+        entra para generar la RSA y cifrar la clave AES */
+        if(!txt && it==0 && FXMLDocumentController.clave!=null){
+            //Generamos una semilla aleatoria segura con secure random
+            SecureRandom random = new SecureRandom();
+            random.nextBytes(keyValue); 
+            System.out.println("keyValue ----> " + Arrays.toString(keyValue));
+            Key aesKey = generateKey(true);
+            RSAenc.encrypt(keyValue);
+        }
             
-            byte[] result;
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream( )) {
-                outputStream.write( encVal );
-                outputStream.write( RSAenc.clave_AES_cif );
-                result = outputStream.toByteArray( );
-            }
-	    return result;    
+        Key aesKey = generateKey(txt);
+	Cipher c = Cipher.getInstance("AES");
+	c.init(Cipher.ENCRYPT_MODE, aesKey);
+	byte[] encVal = c.doFinal(data.getBytes());
+
+        //Si estamos cifrando el txt con la clave RSA priv return aqui y no concatenamos nda detras
+        if(it==-1){
+            return encVal;
+        }
+            
+        byte[] result;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream( )) {
+            outputStream.write( encVal );
+            outputStream.write( RSAenc.clave_AES_cif );
+            result = outputStream.toByteArray( );
+        }
+	return result;    
     }
    
-    public static String decrypt(byte[] encryptedData) throws Exception {      
+    protected static String decrypt(byte[] encryptedData) throws Exception {      
         Key key = null;
         boolean esClave = false;     
         int tam_clave = 256;
@@ -59,7 +63,6 @@ public class AESenc {
                     encryptedArchivo[i] = encryptedData[i];                
                 }
         }
-        
         //Desciframos los archivos
             else {
                 //Desconcatenar la clave AES cifrada, se la pasas a RSAenc, y el return de RSAenc.decrypt sera el keyValue
@@ -90,17 +93,10 @@ public class AESenc {
         
         Key aesKey = null;
         if(txt){
-
-           //COGER LOS BYTES DES LA INTERFAZ
-           //DE MOMENTO TODO LOS CIFRADOS LOS HACEMOS CON LA CLAVE AES ESTATICA    
             String clave = FXMLDocumentController.clave;   
             aesKey=new SecretKeySpec(clave.getBytes(), algoritmo);
         }    
         else{
-            //SecureRandom random = new SecureRandom();
-            //byte[] keyValue = new byte[16];
-            // random.nextBytes(keyValue); 
-            //keyValue = new byte[]{-59, -126, 79, -43, 93, 39, 100, 94, -127, -46, -90, -46, -59, 9, -60, 18}; 
             aesKey = new SecretKeySpec(keyValue, algoritmo);
         } 
 

@@ -59,7 +59,7 @@ public class RSAenc {
         //En privateKey le pasaríamos la clave privada que esta en el txt, habría que pasar de string a privateKe 
        
         try{
-            Path path = Paths.get("C:\\Users\\Mario\\Desktop\\DES_CIF_clave_privRSA_8143.txt");      
+            Path path = Paths.get("C:\\Users\\Mario\\Desktop\\DES_CIF_clave_privRSA_.txt");      
             privateKeyBytes = Files.readAllBytes(path);
         }   catch(NoSuchFileException e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);

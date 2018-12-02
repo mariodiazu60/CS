@@ -109,6 +109,7 @@
 ------------------Novedades------------------------
 -Versión pseudo-funcional, falta añadir un selector de archivos para el archivo de claves. Ya que ahora está
 	puesto como un path en el codigo. (En RSAenc concretamente)
+-Ahora la semilla que genera la clave AES es distinta para cada grupo de archivos.
 -Capturadas varias excepciones, que yo sepa no queda ninguna pero hay que seguir probrando.
 
 ---------------Fallos encontrados------------------
@@ -116,4 +117,4 @@
 
 ---------------Fallos solucionados------------------
 -Cuando pasamos el contenido del TXT para descifrarlo en RSAenc.decrypt nos devuelve un error. -----> ARREGLADO.
-	----> Ahora ya funciona correctamente. Faltaba un fos.flus() al escribir el archivo
+	----> Ahora ya funciona correctamente. Faltaba un fos.flus()
