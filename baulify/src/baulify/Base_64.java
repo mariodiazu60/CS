@@ -1,6 +1,4 @@
 package baulify;
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Base_64 {
 	
-	public Base_64(){}
+	protected Base_64(){}
 	
     /**
      *Aqui se guarda la extension del archivo que estamos tratando.
@@ -22,7 +20,7 @@ public class Base_64 {
      */
     public static String extension_iteracion_actual;
         
-	public static String codificar_Base64(File archivo, int it){
+	protected static String codificar_Base64(File archivo, int it){
 	     String encodedfile;
              String resultado = null;
              String extension;
@@ -54,7 +52,7 @@ public class Base_64 {
 	 }
 	 
 	
-	public static byte[] decodificar_Base64(String archivo_B64){
+	protected static byte[] decodificar_Base64(String archivo_B64){
 	    
             byte[] ArrayDecodificado = null;
             try {
@@ -76,7 +74,7 @@ public class Base_64 {
 	 }
 	
 	
-	public static void ArrayBytes_toFile(byte[] ArchivoEnBytes, int it, boolean cifrar) throws FileNotFoundException, IOException{      
+	protected static void ArrayBytes_toFile(byte[] ArchivoEnBytes, int it, boolean cifrar) throws FileNotFoundException, IOException{      
             
             //obtenemos el nombre y la extension del archivo
             File ruta = FXMLDocumentController.selectedDirectory;
