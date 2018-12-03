@@ -2,10 +2,13 @@ package baulify;
 
 import java.io.ByteArrayOutputStream;
 import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
+import javafx.scene.control.Alert;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 
 public class AESenc {
     
@@ -22,13 +25,12 @@ public class AESenc {
             //Generamos una semilla aleatoria segura con secure random
             SecureRandom random = new SecureRandom();
             random.nextBytes(keyValue); 
-            System.out.println("keyValue ----> " + Arrays.toString(keyValue));
             Key aesKey = generateKey(true);
             RSAenc.encrypt(keyValue);
         }
             
         Key aesKey = generateKey(txt);
-	Cipher c = Cipher.getInstance("AES");
+	Cipher c = Cipher.getInstance(algoritmo);
 	c.init(Cipher.ENCRYPT_MODE, aesKey);
 	byte[] encVal = c.doFinal(data.getBytes());
 
@@ -42,6 +44,7 @@ public class AESenc {
             outputStream.write( encVal );
             outputStream.write( RSAenc.clave_AES_cif );
             result = outputStream.toByteArray( );
+            outputStream.close();
         }
 	return result;    
     }
@@ -58,6 +61,7 @@ public class AESenc {
         if(FXMLDocumentController.clave.equalsIgnoreCase("") == false){
             esClave = true;
             key = generateKey(esClave); 
+            //borramos el txt descifrado con la rsa
             encryptedArchivo = new byte[encryptedData.length];
             for(int i = 0; i<encryptedData.length ; ++i){ 
                     encryptedArchivo[i] = encryptedData[i];                
@@ -80,10 +84,9 @@ public class AESenc {
                 }
         
                 keyValue = RSAenc.decrypt(encryptedClave);
-                System.out.println("key value --> " + Arrays.toString(keyValue));
                 key = generateKey(esClave);
             }      
-        Cipher c = Cipher.getInstance("AES");
+        Cipher c = Cipher.getInstance(algoritmo);
         c.init(Cipher.DECRYPT_MODE, key);
         byte[] decValue = c.doFinal(encryptedArchivo);
         return new String(decValue);
@@ -94,13 +97,35 @@ public class AESenc {
         Key aesKey = null;
         if(txt){
             String clave = FXMLDocumentController.clave;   
-            aesKey=new SecretKeySpec(clave.getBytes(), algoritmo);
-        }    
+            //coger los bites y hacer un hash,con el hash generar la clave?s
+            if(clave.getBytes().length!=8){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("¡ERROR!");
+                alert.setHeaderText("¡Extensión de clave no válida!");
+                alert.setContentText("Revise la longitud de la clave");
+                alert.showAndWait();
+            }   else{               
+                    byte[] bits_hash = new byte[16];
+                    byte[] hash = hashPassword(clave).getBytes();
+                    for(int i = 0; i<16; ++i){
+                        bits_hash[i] = hash[i];
+                    }
+                    aesKey=new SecretKeySpec(bits_hash, "AES");
+                }
+        }
+        
         else{
-            aesKey = new SecretKeySpec(keyValue, algoritmo);
+            aesKey = new SecretKeySpec(keyValue, "AES");
         } 
-
         return aesKey; 
+    }
+    
+    public static String hashPassword(String clave) throws NoSuchAlgorithmException {     
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(clave.getBytes());
+        byte[] digest = md.digest();
+        String myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
+            return myHash;
     }
 }
 

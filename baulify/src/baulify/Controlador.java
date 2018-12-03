@@ -46,18 +46,18 @@ public class Controlador {
                         //Al final de la ultima iteracion informamos de que el cifrado ha terminado y ciframos el txt con la RSA privada
                         if(i==(ArchivosEnB64.length-1)){
 
-                           //obtenemos el archivo txt de la clave priv RSA, pasamos a b64 y lo ciframos con AES
-                           File txt = new File(RSAenc.txtruta);                          
-                           String txt_b64 = Base_64.codificar_Base64(txt, -1);
+                            //obtenemos el archivo txt de la clave priv RSA, pasamos a b64 y lo ciframos con AES
+                            File txt = new File(RSAenc.txtruta);                          
+                            String txt_b64 = Base_64.codificar_Base64(txt, -1);
                              
-                           //txt cifrado con AES aun en un byte[]
-                           byte[] txtFile_priv = AESenc.encrypt(txt_b64, -1, true);
+                            //txt cifrado con AES aun en un byte[]
+                            byte[] txtFile_priv = AESenc.encrypt(txt_b64, -1, true);
 
-                           //pasamos el byte[] a un FILE
-                           Base_64.ArrayBytes_toFile(txtFile_priv, -1 , true);
+                            //pasamos el byte[] a un FILE
+                            Base_64.ArrayBytes_toFile(txtFile_priv, -1 , true);
                            
-                           //borramos el txt con la RSA privada sin cifrar
-                             txt.delete();
+                            //borramos el txt con la RSA privada sin cifrar
+                            txt.delete();
                             
                             //vaciamos el file chooser                 
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -106,7 +106,12 @@ public class Controlador {
                     Base_64.ArrayBytes_toFile(Archivo_decodificado, i, false);
 
                     //Al final de la ultima iteracion informamos de que el descifrado ha terminado  
-                    if(i==(archivos.size()-1)){
+                    if(i==(archivos.size()-1)){     
+                        if(FXMLDocumentController.selectedFiles2 != null){
+                            File archivoClave = new File(FXMLDocumentController.selectedFiles2.getAbsolutePath());
+                            archivoClave.delete();
+                        }
+                        
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("¡Terminado!");
                         alert.setHeaderText("¡Ya hemos terminado de descifrar tus archivos!");

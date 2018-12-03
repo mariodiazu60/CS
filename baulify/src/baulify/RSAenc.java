@@ -59,9 +59,9 @@ public class RSAenc {
         //En privateKey le pasaríamos la clave privada que esta en el txt, habría que pasar de string a privateKe 
        
         try{
-            Path path = Paths.get("C:\\Users\\Mario\\Desktop\\DES_CIF_clave_privRSA_.txt");      
+            Path path = Paths.get(FXMLDocumentController.selectedFiles2.getAbsolutePath());      
             privateKeyBytes = Files.readAllBytes(path);
-        }   catch(NoSuchFileException e){
+        }   catch(Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("¡ERROR!");
                         alert.setHeaderText("¡No se encontró el archivo de claves!");
@@ -72,7 +72,7 @@ public class RSAenc {
             }
         
         PrivateKey privateKey = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));    
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);       
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);   
             return cipher.doFinal(encrypted);
     }
 }

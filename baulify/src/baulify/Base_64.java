@@ -88,25 +88,27 @@ public class Base_64 {
                     nombre_archivo = archivo.substring(0,archivo.lastIndexOf("."));
                 }
             } else{
-                int randomNum = ThreadLocalRandom.current().nextInt(0, 10000 + 1);
-                nombre_archivo = "clave_privRSA_"; //+ randomNum;
+                int randomNum = ThreadLocalRandom.current().nextInt(0, 10000);
+                nombre_archivo = "clave_privRSA_" + randomNum;
             }
             
             //if para ver si ciframos o descriframos
             if(cifrar){
 		try  {    
                     FileOutputStream fos = new FileOutputStream(ruta + "\\CIF_" + nombre_archivo + ".crypt");
-			   fos.write(ArchivoEnBytes);         
-                }
-                catch(IOException e){}
+			   fos.write(ArchivoEnBytes);  
+                           fos.flush();
+                           fos.close();
+                }   catch(IOException e){}
             }
             
             else{
 		try  {                   
                     FileOutputStream fos = new FileOutputStream(ruta + "\\DES_" + nombre_archivo + "." + extension_iteracion_actual);
 			   fos.write(ArchivoEnBytes);
-                }
-                catch(IOException e){}
+                           fos.flush();
+                           fos.close();
+                }   catch(IOException e){}
             }
         }
 

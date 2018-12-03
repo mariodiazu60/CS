@@ -31,9 +31,15 @@ public class FXMLDocumentController implements Initializable {
     public FXMLDocumentController() {}
     
     public static File selectedDirectory;
+    public static File selectedFiles2;
     public static List<File> selectedFiles;
     public static String clave;
     
+    @FXML
+    private Button archivoClave;
+    
+    @FXML
+    private Text rutaClave;
 
     @FXML
     private Button elegir;
@@ -57,6 +63,8 @@ public class FXMLDocumentController implements Initializable {
     private Button descifrar;
     
     FileChooser fc = null;
+    FileChooser fc2 = null;
+    
     public void ElegirAction(ActionEvent event) {
         fc = new FileChooser();
         selectedFiles = fc.showOpenMultipleDialog(null);
@@ -69,7 +77,15 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-
+    public void ClavesAction(ActionEvent event) {
+        fc2 = new FileChooser();
+        selectedFiles2 = fc2.showOpenDialog(null);
+        if (selectedFiles2 != null) {
+            rutaClave.setText(selectedFiles2.getAbsolutePath());
+        } else {
+            System.out.println("El directorio no es válido");
+        }
+    }
     
     public void EnRutarAction(ActionEvent event) {
         DirectoryChooser dc = new DirectoryChooser();
@@ -131,13 +147,7 @@ public class FXMLDocumentController implements Initializable {
             Controlador.descifrar(selectedFiles);
          }
     }
-    
-    public void refrescar_lista(){
-        System.out.println("Refrescamos la lista");
-        lista.getItems().clear();
-        lista.refresh();
-    }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
