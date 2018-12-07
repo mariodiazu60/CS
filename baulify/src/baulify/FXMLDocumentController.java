@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package baulify;
 
 import java.io.File;
@@ -22,10 +18,6 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
-/**
- *
- * @author tonih
- */
 public class FXMLDocumentController implements Initializable {
     
     public FXMLDocumentController() {}
@@ -113,13 +105,7 @@ public class FXMLDocumentController implements Initializable {
             alert.setContentText("Elija la ruta donde desea guardar los archivos cifrados.");
             alert.showAndWait();
         }else{
-            clave = password.getText();
-            //Crear otra alerta con =/= nombre CLARA LO SABE
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("¡Estamos trabajando!");
-            alert.setContentText("Estamos trabajando en cifrar tus archivos, ¡Un momento por favor!");
-            alert.show();
-            
+            clave = password.getText();            
             Controlador.cifrar(selectedFiles);
         }
     }
@@ -138,12 +124,7 @@ public class FXMLDocumentController implements Initializable {
             alert.setContentText("Elija la ruta donde desea guardar los archivos descifrados.");
             alert.showAndWait();
         }else{
-            clave = password.getText();
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("¡Estamos trabajando!");
-            alert.setContentText("Estamos trabajando en descifrar tus archivos, ¡Un momento por favor!");
-            alert.show();
-            
+            clave = password.getText();     
             Controlador.descifrar(selectedFiles);
          }
     }

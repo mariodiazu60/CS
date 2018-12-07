@@ -138,7 +138,6 @@
 -Varios errores corregidos.
 
 ---------------Fallos encontrados------------------
--El mensaje de ESTAMOS TRABAJANDO se queda abierto aún reiciando el programa. xDxDxDxDxDxDxDxDxDxDxDxDxDxDxDxDxD
 -Cuando se inserta una clave menor a 8 digitos o mayor sale un mensaje de error pero el programa sigue ejecutando igual.
 
 

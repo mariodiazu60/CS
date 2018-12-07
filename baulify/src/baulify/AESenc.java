@@ -61,7 +61,7 @@ public class AESenc {
         if(FXMLDocumentController.clave.equalsIgnoreCase("") == false){
             esClave = true;
             key = generateKey(esClave); 
-            //borramos el txt descifrado con la rsa
+          
             encryptedArchivo = new byte[encryptedData.length];
             for(int i = 0; i<encryptedData.length ; ++i){ 
                     encryptedArchivo[i] = encryptedData[i];                
@@ -98,7 +98,7 @@ public class AESenc {
         if(txt){
             String clave = FXMLDocumentController.clave;   
             //coger los bites y hacer un hash,con el hash generar la clave?s
-            if(clave.getBytes().length!=8){
+            if(clave.getBytes().length>8){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("¡ERROR!");
                 alert.setHeaderText("¡Extensión de clave no válida!");
